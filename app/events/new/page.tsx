@@ -10,6 +10,9 @@ export default function NewEventPage() {
   const router = useRouter();
 
   useEffect(() => {
+    document.title = 'Créer un événement | Eventy';
+  }, []);
+  useEffect(() => {
     if (!isLoggedIn) router.push('/login'); // redirection côté client
   }, [isLoggedIn, router]);
 
