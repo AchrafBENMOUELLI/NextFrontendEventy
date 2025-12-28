@@ -13,10 +13,10 @@ export default function NewEventPage() {
     document.title = 'Créer un événement | Eventy';
   }, []);
   useEffect(() => {
-    if (!isLoggedIn) router.push('/login'); // redirection côté client
+    if (!isLoggedIn) router.push('/login');
   }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) return null; // on attend la redirection
+  if (!isLoggedIn) return null;
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">

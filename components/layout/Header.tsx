@@ -26,6 +26,13 @@ export default function Header() {
 
         <nav className="flex items-center gap-6">
           <Link
+            href="/"
+            className="text-gray-300 hover:text-white font-medium transition-all duration-300 hover:scale-105 relative group"
+          >
+            Home
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 group-hover:w-full transition-all duration-300"></span>
+          </Link>
+          <Link
             href="/events"
             className="text-gray-300 hover:text-white font-medium transition-all duration-300 hover:scale-105 relative group"
           >

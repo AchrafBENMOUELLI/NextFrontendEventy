@@ -1,5 +1,5 @@
 'use client';
-
+import { deleteEvent } from '@/lib/api';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -16,6 +16,7 @@ import FeedbackForm from '@/components/feedback/FeedbackForm';
 import { Feedback as FeedbackType } from '@/types/feedback';
 
 export default function EventDetailsPage() {
+
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
@@ -138,7 +139,6 @@ export default function EventDetailsPage() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-900 relative overflow-hidden">
       {/* Animated background elements */}
@@ -160,22 +160,38 @@ export default function EventDetailsPage() {
 
         {/* Main Content Card */}
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/20 p-8 mb-8">
-          {/* Title & Edit Button */}
-          <div className="flex items-start justify-between mb-6">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent flex-1">
-              {event.title}
-            </h1>
+          {/* Title & Edit/Delete Buttons */}
+<div className="flex items-start justify-between mb-6">
+  <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent flex-1">
+    {event.title}
+  </h1>
 
-            {isLoggedIn && (user?.role === 'organizer' || user?.role === 'admin') && (
-              <Link
-                href={`/events/edit/${event._id}`}
-                className="flex items-center gap-2 bg-blue-600/20 hover:bg-blue-600 border border-blue-500/50 hover:border-transparent text-blue-300 hover:text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 group"
-              >
-                <span className="group-hover:rotate-12 transition-transform duration-300">✏️</span>
-                Modifier
-              </Link>
-            )}
-          </div>
+  {isLoggedIn && (user?.role === 'admin' || user?._id === event.organizerId._id) && (
+    <div className="flex gap-2">
+      {/* Edit Button */}
+      <Link
+        href={`/events/edit/${event._id}`}
+        className="flex items-center gap-2 bg-blue-600/20 hover:bg-blue-600 border border-blue-500/50 hover:border-transparent text-blue-300 hover:text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 group"
+      >
+        <span className="group-hover:rotate-12 transition-transform duration-300">✏️</span>
+        Modifier
+      </Link>
+
+      {/* Delete Button */}
+      <button
+        onClick={async () => {
+          await deleteEvent(event._id, user.token);
+          router.push('/events');
+        }}
+        className="flex items-center gap-2 bg-red-600/20 hover:bg-red-600 border border-red-500/50 hover:border-transparent text-red-300 hover:text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 group"
+      >
+        <span className="group-hover:rotate-12 transition-transform duration-300">🗑️</span>
+        Supprimer
+      </button>
+    </div>
+  )}
+</div>
+
 
           {/* Location & Date */}
           <div className="flex flex-wrap items-center gap-4 mb-6 text-gray-300">

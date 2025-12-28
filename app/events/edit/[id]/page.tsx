@@ -31,7 +31,7 @@ export default function EditEventPage() {
       setForm({
         title: event.title,
         description: event.description,
-        date: event.date.slice(0, 16), // Support datetime-local
+        date: event.date.slice(0, 16), 
         location: event.location,
         price: event.price,
         imageUrl: event.imageUrl,
